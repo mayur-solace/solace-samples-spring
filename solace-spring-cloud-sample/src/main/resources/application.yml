@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: spring-cloud-stream-dt-demo
+
+  cloud:
+    function:
+      definition: convertFtoC;
+
+    stream:
+      default-binder: local-solace
+      dynamic-destination-cache-size: 10
+      poller:
+        fixed-delay: 5000
+
+
+      bindings:
+        dummy-out-0:
+          destination: dummy/out/topic
+        convertFtoC-in-0:
+          destination: TEMPS.Q
+          group: PROCESSOR
+        convertFtoC-out-0:
+          destination: sensor/temperature/celsius
+
+      binders:
+        local-solace:
+          type: solace
+          environment:
+            solace:
+              java:
+                host: tcp://localhost:55557
+                msgVpn: default
+                clientUsername: default
+                clientPassword: default
+
+      solace:
+        bindings:
+          convertFtoC-in-0:
+            consumer:
+              queueAdditionalSubscriptions: sensor/temperature/fahrenheit
+
+management:
+  tracing:
+    sampling:
+      probability: 1
+
+tracing.url: http://localhost:14317
+
+#add logging configuration
+logging:
+  level:
+    org.springframework: INFO
+    org.hibernate: INFO
+    com.solace: INFO
+    com.solace.spring.cloud: INFO
+
+
+server:
+  port: 8096                                
