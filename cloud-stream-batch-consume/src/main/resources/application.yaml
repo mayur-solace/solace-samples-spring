@@ -10,15 +10,32 @@ spring:
           consumer:
             batch-mode: true
             useNativeDecoding: true
+
+      solace:
+        default:
+          consumer:
+#            add-destination-as-subscription-to-queue: false
+#            provision-durable-queue: false
+#            provision-error-queue: false
+            queue-name-expression: "destination"
+
       binders:
         solace-broker:
           type: solace
           environment:
             solace:
               java:
-                host: tcp://localhost:55555
+                host: tcp://localhost:55557
                 msgVpn: default
                 clientUsername: default
                 clientPassword: default                
+
+management:
+  tracing:
+    sampling:
+      probability: 1
+
+#tracing.url: http://localhost:14317
+
 server:
-  port: 8096                
+  port: 0

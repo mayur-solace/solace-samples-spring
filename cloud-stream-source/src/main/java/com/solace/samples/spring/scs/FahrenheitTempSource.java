@@ -19,49 +19,78 @@
 
 package com.solace.samples.spring.scs;
 
+import com.solace.samples.spring.common.SensorReading;
+import com.solace.samples.spring.common.SensorReading.BaseUnit;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Supplier;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
-import com.solace.samples.spring.common.SensorReading;
-import com.solace.samples.spring.common.SensorReading.BaseUnit;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 
 @SpringBootApplication
 public class FahrenheitTempSource {
-	private static final Logger log = LoggerFactory.getLogger(FahrenheitTempSource.class);
 
-	private static final UUID sensorIdentifier = UUID.randomUUID();
-	private static final Random random = new Random(System.currentTimeMillis());
-	private static final int RANDOM_MULTIPLIER = 100;
+  private static final Logger log = LoggerFactory.getLogger(FahrenheitTempSource.class);
 
-	public static void main(String[] args) {
-		SpringApplication.run(FahrenheitTempSource.class);
-	}
+  private static final UUID sensorIdentifier = UUID.randomUUID();
+  private static final Random random = new Random(System.currentTimeMillis());
+  private static final int RANDOM_MULTIPLIER = 100;
 
-	/* 
-	 * Basic Supplier which sends messages every X milliseconds
-	 * Configurable using spring.cloud.stream.poller.fixed-delay 
-	 */
-	@Bean
-	public Supplier<SensorReading> emitSensorReading() {
-		return () -> {
-			double temperature = random.nextDouble() * RANDOM_MULTIPLIER;
+  public static void main(String[] args) {
+    SpringApplication.run(FahrenheitTempSource.class);
+  }
 
-			SensorReading reading = new SensorReading();
-			reading.setSensorID(sensorIdentifier.toString());
-			reading.setTemperature(temperature);
-			reading.setBaseUnit(BaseUnit.FAHRENHEIT);
+  /*
+   * Basic Supplier which sends messages every X milliseconds
+   * Configurable using spring.cloud.stream.poller.fixed-delay
+   */
+  //@Bean
+  public Supplier<SensorReading> emitSensorReading1() {
+    return () -> {
+      double temperature = random.nextDouble() * RANDOM_MULTIPLIER;
 
-			log.info("Emitting " + reading);
+      SensorReading reading = new SensorReading();
+      reading.setSensorID(sensorIdentifier.toString());
+      reading.setTemperature(temperature);
+      reading.setBaseUnit(BaseUnit.FAHRENHEIT);
 
-			return reading;
-		};
-	}
+      log.info("Emitting " + reading);
 
+      return reading;
+    };
+  }
+
+  @Bean
+  public Supplier<Message<SensorReading>> emitSensorReading() {
+    return () -> {
+      double temperature = random.nextDouble() * RANDOM_MULTIPLIER;
+
+      SensorReading reading = new SensorReading();
+      reading.setSensorID(sensorIdentifier.toString());
+      reading.setTemperature(temperature);
+      reading.setBaseUnit(BaseUnit.FAHRENHEIT);
+
+      log.info("Emitting " + reading);
+
+      return MessageBuilder.withPayload(reading)
+          //.setHeader("solace_correlationId", "accept")
+          //.setHeader("solace_correlationId", "reject")
+          .setHeader("solace_correlationId", "requeue")
+          .build();
+    };
+  }
+
+  //@Bean
+  public Supplier<String> emitHello() {
+    return () -> {
+      String message = "Hello World!";
+      log.info("Emitting: {}", message);
+      return message;
+    };
+  }
 }

@@ -4,7 +4,8 @@ spring:
 
   cloud:
     function:
-      definition: convertFtoC;
+      #definition: convertFtoC;hello;
+      definition: hello;
 
     stream:
       default-binder: local-solace
@@ -16,11 +17,13 @@ spring:
       bindings:
         dummy-out-0:
           destination: dummy/out/topic
-        convertFtoC-in-0:
-          destination: TEMPS.Q
-          group: PROCESSOR
-        convertFtoC-out-0:
-          destination: sensor/temperature/celsius
+#        convertFtoC-in-0:
+#          destination: TEMPS.Q
+#        convertFtoC-out-0:
+#          destination: sensor/temperature/celsius
+        hello-in-0:
+          destination: hello
+          group: hello
 
       binders:
         local-solace:
@@ -34,6 +37,13 @@ spring:
                 clientPassword: default
 
       solace:
+        default:
+          consumer:
+            add-destination-as-subscription-to-queue: false
+            provision-durable-queue: false
+            provision-error-queue: false
+            queue-name-expression: "destination"
+
         bindings:
           convertFtoC-in-0:
             consumer:

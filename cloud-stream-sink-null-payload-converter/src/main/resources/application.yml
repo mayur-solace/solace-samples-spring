@@ -17,7 +17,7 @@ spring:
           environment:
             solace:
               java:
-                host: tcp://localhost:55555
+                host: tcp://localhost:55557
                 msgVpn: default
                 clientUsername: default
                 clientPassword: default
@@ -35,4 +35,4 @@ logging:
     org.springframework: INFO
     
 server:
-  port: 8095
+  port: 0

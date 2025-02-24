@@ -43,6 +43,24 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.solacesystems</groupId>
+			<artifactId>sol-jcsmp</artifactId>
+			<version>10.25.3-jcsmp_auto_instrument.44353</version>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-tracing-bridge-otel</artifactId>
+		</dependency>
+		<!--    <dependency>-->
+		<!--      <groupId>io.opentelemetry</groupId>-->
+		<!--      <artifactId>opentelemetry-exporter-zipkin</artifactId>-->
+		<!--    </dependency>-->
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-exporter-otlp</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>com.solace.spring.cloud</groupId>
 			<artifactId>spring-cloud-starter-stream-solace</artifactId>
 		</dependency>

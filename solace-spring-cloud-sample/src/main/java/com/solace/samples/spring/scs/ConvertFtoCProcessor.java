@@ -19,6 +19,7 @@
 
 package com.solace.samples.spring.scs;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,13 @@ public class ConvertFtoCProcessor {
       log.info("Sending: " + reading);
 
       return reading;
+    };
+  }
+
+  @Bean
+  public Consumer<String> hello() {
+    return message -> {
+      log.info("Received: " + message);
     };
   }
 }

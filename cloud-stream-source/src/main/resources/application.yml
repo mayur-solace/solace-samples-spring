@@ -2,13 +2,19 @@ spring:
   cloud:
     function:
       definition: emitSensorReading
+      #definition: emitSensorReading;emitHello;
+      #definition: emitHello;
+
     stream:
       poller:
-        fixed-delay: 5000
+        fixed-delay: 10000
       bindings:
         emitSensorReading-out-0:
-          destination: sensor/temperature/fahrenheit
+          destination: manual/ack/test #solace/function/two #pub/sub/plus/test #sensor/temperature/fahrenheit
           binder: local-solace
+#        emitHello-out-0:
+#          destination: hello/world
+#          binder: local-solace
       binders:
         local-solace:
           type: solace
@@ -19,5 +25,12 @@ spring:
                 msgVpn: default
                 clientUsername: default
                 clientPassword: default
+management:
+  tracing:
+    sampling:
+      probability: 1
+
+#tracing.url: http://localhost:14317
+
 server:
-  port: 8096                                
+  port: 0

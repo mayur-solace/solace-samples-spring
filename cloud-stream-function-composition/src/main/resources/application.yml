@@ -10,20 +10,35 @@ spring:
           destination: FunctionComposition.Q
         preProcess|process|postProcess-out-0:
           destination: function/composition/topic
-      solace:
-        bindings:
-          preProcess|process|postProcess-in-0:
-            consumer:
-             queueAdditionalSubscriptions: pub/sub/plus/>
+
       binders:
         local-solace:
           type: solace
           environment:
             solace:
               java:
-                host: tcp://localhost:55555
+                host: tcp://localhost:55557
                 msgVpn: default
                 clientUsername: default
                 clientPassword: default
+
+      solace:
+        default:
+          consumer:
+            add-destination-as-subscription-to-queue: false
+            provision-durable-queue: false
+            provision-error-queue: false
+            queue-name-expression: "destination"
+
+        bindings:
+          preProcess|process|postProcess-in-0:
+            consumer:
+             queueAdditionalSubscriptions: pub/sub/plus/>
+
+management:
+  tracing:
+    sampling:
+      probability: 1
+
 server:
-  port: 8096                                
+  port: 0

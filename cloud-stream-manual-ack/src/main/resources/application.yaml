@@ -12,16 +12,18 @@ spring:
             concurrency: 2
         manualAckFunction-out-0:
           destination: 'manual/ack/result'
+
       binders:
         solace-broker:
           type: solace
           environment:
             solace:
               java:
-                host: tcp://localhost:55555
+                host: tcp://localhost:55557
                 msgVpn: default
                 clientUsername: default
                 clientPassword: default
+
       solace:
         bindings:
           manualAckFunction-in-0:
@@ -30,5 +32,13 @@ spring:
               errorQueueNameExpression: "'ERROR_QUEUE' + '-' + destination.trim().replaceAll('[*>]', '_')"
               autoBindErrorQueue: true
               queueMaxMsgRedelivery: 2
+
+management:
+  tracing:
+    sampling:
+      probability: 1
+
+#tracing.url: http://localhost:14317
+
 server:
-  port: 8096                              
+  port: 0

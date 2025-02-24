@@ -8,25 +8,40 @@ spring:
           destination: TEMPS.Q
           #The presence of "group" tells the binder to follow the "consumer group" pattern
           group: SINK
-          consumer:
-            #Concurrency can be used with a consumer group (non-exclusive queue) to process events in multiple threads
-            concurrency: 5
+          #consumer:
+            ##Concurrency can be used with a consumer group (non-exclusive queue) to process events in multiple threads
+          #  concurrency: 5
       binders:
         local-solace:
           type: solace
           environment:
             solace:
               java:
-                host: tcp://localhost:55555
+                host: tcp://localhost:55557
                 msgVpn: default
                 clientUsername: default
                 clientPassword: default
+
       solace:
-        bindings:
-          sink-in-0:
-            consumer:
-              #This adds a topic subscription w/ wildcards to the queue created with a name of TEMPS.Q.SINK above 
-              queueAdditionalSubscriptions: sensor/temperature/>
-                
+        default:
+          consumer:
+            add-destination-as-subscription-to-queue: false
+            provision-durable-queue: false
+            provision-error-queue: false
+            queue-name-expression: "destination"
+
+#        bindings:
+#          sink-in-0:
+#            consumer:
+#              #This adds a topic subscription w/ wildcards to the queue created with a name of TEMPS.Q.SINK above
+#              queueAdditionalSubscriptions: sensor/temperature/>
+
+management:
+  tracing:
+    sampling:
+      probability: 1
+
+#tracing.url: http://localhost:14317
+
 server:
-  port: 8093
+  port: 0

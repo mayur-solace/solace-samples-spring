@@ -3,6 +3,8 @@ spring:
     function:
       definition: functionUsingTargetDestHeader;functionUsingStreamBridge;supplierTargetDestination;supplierStreamBridge;receiveAll
     stream:
+      poller:
+        fixed-delay: 10000
       function:
         definition: functionUsingTargetDestHeader;functionUsingStreamBridge;supplierTargetDestination;supplierStreamBridge;receiveAll
       #Sets the cache size when using StreamBridge
@@ -20,21 +22,39 @@ spring:
         supplierStreamBridge-out-0:
           destination: topic/in/streambridge
         receiveAll-in-0:
-          destination: queue  
-      solace:
-        bindings:
-          receiveAll-in-0:
-            consumer:
-             queueAdditionalSubscriptions: pub/sub/plus/>
+          destination: queue
+
+
       binders:
         local-solace:
           type: solace
           environment:
             solace:
               java:
-                host: tcp://localhost:55555
+                host: tcp://localhost:55557
                 msgVpn: default
                 clientUsername: default
                 clientPassword: default
+
+        solace:
+          default:
+            consumer:
+              add-destination-as-subscription-to-queue: false
+              provision-durable-queue: false
+              provision-error-queue: false
+              queue-name-expression: "destination"
+
+          bindings:
+            receiveAll-in-0:
+              consumer:
+                queueAdditionalSubscriptions: pub/sub/plus/>
+
+management:
+  tracing:
+    sampling:
+      probability: 1
+
+#tracing.url: http://localhost:14317
+
 server:
-  port: 8096                
+  port: 0
