@@ -30,12 +30,5 @@ spring:
                 clientUsername: default
                 clientPassword: default                
 
-management:
-  tracing:
-    sampling:
-      probability: 1
-
-#tracing.url: http://localhost:14317
-
 server:
   port: 0

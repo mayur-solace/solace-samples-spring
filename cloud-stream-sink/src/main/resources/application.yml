@@ -36,12 +36,5 @@ spring:
 #              #This adds a topic subscription w/ wildcards to the queue created with a name of TEMPS.Q.SINK above
 #              queueAdditionalSubscriptions: sensor/temperature/>
 
-management:
-  tracing:
-    sampling:
-      probability: 1
-
-#tracing.url: http://localhost:14317
-
 server:
   port: 0

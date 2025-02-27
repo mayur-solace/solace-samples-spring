@@ -35,10 +35,5 @@ spring:
             consumer:
              queueAdditionalSubscriptions: pub/sub/plus/>
 
-management:
-  tracing:
-    sampling:
-      probability: 1
-
 server:
   port: 0
