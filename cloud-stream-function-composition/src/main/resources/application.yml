@@ -25,9 +25,9 @@ spring:
       solace:
         default:
           consumer:
-            add-destination-as-subscription-to-queue: false
-            provision-durable-queue: false
-            provision-error-queue: false
+            add-destination-as-subscription-to-queue: true
+            provision-durable-queue: true
+            provision-error-queue: true
             queue-name-expression: "destination"
 
         bindings:

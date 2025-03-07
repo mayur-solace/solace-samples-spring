@@ -11,9 +11,11 @@ spring:
       bindings:
         emitSensorReading-out-0:
           #destination: manual/ack/test
-          #destination: solace/function/two #
-          #destination: pub/sub/plus/test #
-          destination: sensor/temperature/fahrenheit #source - sink, processor, nullpayload
+          #destination: solace/function/one              #Binding Specific Error Handler
+          #destination: solace/function/two             #Global Error Handler
+          #destination: pub/sub/plus/test                #function composition
+          destination: sensor/temperature/fahrenheit   #source - sink, processor, nullpayload
+          #destination: batch/publish/trigger
           binder: local-solace
 #        emitHello-out-0:
 #          destination: hello/world
