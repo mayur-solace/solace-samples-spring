@@ -16,3 +16,5 @@ build/
 /.metadata/
 bin/
 target/
+
+/3rdparty/

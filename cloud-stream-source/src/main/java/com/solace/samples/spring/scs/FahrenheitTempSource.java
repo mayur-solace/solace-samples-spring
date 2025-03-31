@@ -80,7 +80,7 @@ public class FahrenheitTempSource {
       return MessageBuilder.withPayload(reading)
           //.setHeader("solace_correlationId", "accept")
           //.setHeader("solace_correlationId", "reject")
-          //.setHeader("solace_correlationId", "requeue")
+          .setHeader("solace_correlationId", "requeue")
           .build();
     };
   }
